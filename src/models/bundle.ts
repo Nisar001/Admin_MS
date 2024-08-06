@@ -1,29 +1,63 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import { Document, model, Schema } from 'mongoose'
 
 interface IBundle extends Document {
-   name: string;
-   products: { productId: string; quantity: number }[];
-   price: number;
-   sellerId: string;
-   createdAt: Date;
-   updatedAt: Date;
+   name: string
+   price: number
+   discount?: number
+   isDeleted: boolean
+   isBlocked: boolean
+   _blockedBy: Schema.Types.ObjectId
+   _products: Schema.Types.ObjectId[]
+   _createdBy: {
+      _id: Schema.Types.ObjectId,
+      role: 'seller' | 'admin'
+   }
 }
 
-const BundleSchema: Schema = new Schema(
+const bundleSchema: Schema = new Schema(
    {
-      name: { type: String, required: true },
-      products: [
+      name: {
+         type: String,
+         required: true,
+      },
+      price: {
+         type: Number,
+         required: true,
+      },
+      _products: [
          {
-            productId: { type: Schema.Types.ObjectId, ref: 'product', required: true },
-            quantity: { type: Number, required: true }
-         }
+            type: Schema.Types.ObjectId,
+            ref: 'Product',
+         },
       ],
-      price: { type: Number, required: true },
-      sellerId: { type: Schema.Types.ObjectId, ref: 'seller', required: true },
-      createdAt: { type: Date, default: Date.now },
-      updatedAt: { type: Date, default: Date.now }
-   },
-   { timestamps: true }
-);
+      discount: {
+         type: Number,
+         default: undefined
+      },
+      isDeleted: {
+         type: Boolean,
+         default: false,
+      },
+      isBlocked: {
+         type: Boolean,
+         default: false,
+      },
+      _blockedBy: {
+         type: Schema.Types.ObjectId,
+         default: undefined
+      },
 
-export const Bundle = mongoose.model<IBundle>('bundle', BundleSchema);
+      _createdBy: {
+         _id: {
+            type: Schema.Types.ObjectId,
+         },
+         role: {
+            type: String,
+            enum: ['seller', 'admin']
+         }
+      },
+   },
+   { timestamps: true, versionKey: false }
+)
+
+export const Bundle = model<IBundle>('bundle', bundleSchema)
