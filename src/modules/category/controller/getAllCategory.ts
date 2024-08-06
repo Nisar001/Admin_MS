@@ -1,4 +1,4 @@
-import { Category } from "../../../../models/category";
+import { Category } from "../../../models/category";
 import { Request, Response } from "express";
 
 export const getAllCategory = async (req: Request, res: Response) => {

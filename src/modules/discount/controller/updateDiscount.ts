@@ -1,18 +1,15 @@
-import { Discount } from '../../../../models/discount';
-import { Product } from '../../../../models/product';
+import { Discount } from '../../../models/discount';
+import { Product } from '../../../models/product';
 import { Request, Response } from 'express'
 import moment from 'moment';
 
-export const addDiscountOnProduct = async (req: Request, res: Response) => {
+export const updateDiscountOnProduct = async (req: Request, res: Response) => {
    try {
-      const { _id } = req.user // seller id
+      const { _id } = req.user;
       if (!_id) {
-         return res.status(401).json({ message: 'Unauthorized Access' })
+         return res.status(401).json({ message: "Unauthorized Access" })
       }
-      const { _productId, _storeId } = req.query
-      if (!_productId && _storeId) {
-         return res.status(404).json({ message: 'Product id and Store id is missing' })
-      }
+      const { _discountId, _productId } = req.query;
       const { discountType, discountValue, startDate, endDate } = req.body;
       const isNonEmpty = (field: any) => {
          if (typeof field === 'string') {
@@ -46,28 +43,21 @@ export const addDiscountOnProduct = async (req: Request, res: Response) => {
             return res.status(400).json({ error: 'Dates cannot be in the past.' })
          }
       }
-      const existingDiscount = await Discount.findOne({ _seller: _id, _product: _productId })
-      if (existingDiscount) {
-         return res.status(409).json({ message: 'Discount on Product is already added' })
-      }
-      const product = await Product.findById({ _id: _productId })
-      if (!product) {
-         return res.status(404).json({ message: "Product not found" })
-      }
+      const product = await Product.findOne({ _id: _productId })
       if (discountValue > product.price) {
          return res.json({ message: 'Discount value can not be greater then the product price.' })
       }
-      const discount = await Discount.create({
-         _seller: _id,
-         _store: _storeId,
-         _product: _productId,
-         discountType: discountType,
-         discountValue: discountValue,
-         startDate: startDate,
-         endDate: endDate
-      })
-      return res.status(200).json({ success: true, message: "Discount added on product", discount })
+      const discount = await Discount.findOne({ _id: _discountId })
+      if (discountType || discountValue || startDate || endDate) {
+         discount.discountType = discountType,
+            discount.discountValue = discountValue,
+            discount.startDate = startDate,
+            discount.endDate = endDate
+         await discount.save()
+         return res.status(200).json({ success: true, message: 'Discount on product updated sussessfully', discount })
+      } else
+         return res.status(400).json({ error: 'Plase provide some fields to update' })
    } catch (error) {
-      return res.status(500).json({ success: false, message: "Server Error", error })
+      return res.status(500).json({ success: false, error: error.message })
    }
 }

@@ -1,6 +1,6 @@
 import express from 'express'
-import adminRoutes from './modules/admin/routes/index'
-import categoryRoutes from './modules/admin/category/routes'
+import adminRoutes from './modules/routes/index'
+import categoryRoutes from './modules/category/routes'
 import discountRoutes from './modules/discount/routes'
 import { verify_token } from './middlewares/verifyJWT'
 

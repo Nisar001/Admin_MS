@@ -1,4 +1,4 @@
-import { Category } from '../../../../models/category';
+import { Category } from '../../../models/category';
 import { Request, Response } from 'express'
 
 export const updateCategory = async (req: Request, res: Response) => {

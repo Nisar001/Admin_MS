@@ -1,4 +1,4 @@
-import { Discount } from '../../../../models/discount';
+import { Discount } from '../../../models/discount';
 import { Request, Response } from 'express'
 
 export const deleteDiscountOnProduct = async (req: Request, res: Response) => {
