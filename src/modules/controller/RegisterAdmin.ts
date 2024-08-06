@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt'
 import { isValidDate, isValidEmail } from '../../core/utils'
 
 
+
 export const registerAdmin = async (req: Request, res: Response) => {
    try {
       const { name, password, email, phone, countryCode, dob, role } = req.body
