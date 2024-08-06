@@ -3,7 +3,7 @@ import mongoose, { Document, model, Schema } from 'mongoose'
 export interface IProduct extends Document {
    _seller: mongoose.Schema.Types.ObjectId;
    _category: mongoose.Schema.Types.ObjectId;
-   _store: mongoose.Schema.Types.ObjectId;
+   _store?: mongoose.Schema.Types.ObjectId;
    name: string;
    price: number;
    mrp: number;
@@ -26,7 +26,6 @@ const ProductSchema: Schema = new Schema({
    _store: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'store',
-      required: true
    },
    name: {
       type: String,

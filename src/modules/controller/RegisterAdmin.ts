@@ -1,7 +1,8 @@
-import { Admin } from '../../../models/admin'
+import { Admin } from '../../models/admin'
 import { Request, Response } from 'express'
 import bcrypt from 'bcrypt'
-import { isValidDate, isValidEmail } from '../../../core/utils'
+import { isValidDate, isValidEmail } from '../../core/utils'
+
 
 
 export const registerAdmin = async (req: Request, res: Response) => {
