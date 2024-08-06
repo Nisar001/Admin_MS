@@ -1,8 +1,8 @@
-import { Admin } from '../../../models/admin'
+import { Admin } from '../../models/admin'
 import { Request, Response } from 'express'
 import bcrypt from 'bcrypt'
-import { isValidEmail } from '../../../core/utils'
-import { generate_token } from '../../../helpers/jwtHelper'
+import { isValidEmail } from '../../core/utils'
+import { generate_token } from '../../helpers/jwtHelper'
 import jwt from 'jsonwebtoken'
 
 export const loginAdmin = async (req: Request, res: Response) => {
