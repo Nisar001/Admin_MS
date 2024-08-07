@@ -60,4 +60,4 @@ const bundleSchema: Schema = new Schema(
    { timestamps: true, versionKey: false }
 )
 
-export const Bundle = model<IBundle>('bundle', bundleSchema)
+export const Bundle = model<IBundle>('Bundle', bundleSchema)

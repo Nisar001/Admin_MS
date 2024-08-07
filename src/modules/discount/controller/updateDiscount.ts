@@ -1,4 +1,4 @@
-import { Discount } from '../../../models/discount';
+import { AdminDiscount } from '../../../models/discount';
 import { Product } from '../../../models/product';
 import { Request, Response } from 'express'
 import moment from 'moment';
@@ -47,7 +47,7 @@ export const updateDiscountOnProduct = async (req: Request, res: Response) => {
       if (discountValue > product.price) {
          return res.json({ message: 'Discount value can not be greater then the product price.' })
       }
-      const discount = await Discount.findOne({ _id: _discountId })
+      const discount = await AdminDiscount.findOne({ _id: _discountId })
       if (discountType || discountValue || startDate || endDate) {
          discount.discountType = discountType,
             discount.discountValue = discountValue,

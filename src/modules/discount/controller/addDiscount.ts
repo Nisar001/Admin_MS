@@ -1,4 +1,4 @@
-import { Discount } from '../../../models/discount';
+import { AdminDiscount } from '../../../models/discount';
 import { Product } from '../../../models/product';
 import { Request, Response } from 'express'
 import moment from 'moment';
@@ -46,7 +46,7 @@ export const addDiscountOnProduct = async (req: Request, res: Response) => {
             return res.status(400).json({ error: 'Dates cannot be in the past.' })
          }
       }
-      const existingDiscount = await Discount.findOne({ _seller: _id, _product: _productId })
+      const existingDiscount = await AdminDiscount.findOne({ _admin: _id, _product: _productId })
       if (existingDiscount) {
          return res.status(409).json({ message: 'Discount on Product is already added' })
       }
@@ -57,8 +57,8 @@ export const addDiscountOnProduct = async (req: Request, res: Response) => {
       if (discountValue > product.price) {
          return res.json({ message: 'Discount value can not be greater then the product price.' })
       }
-      const discount = await Discount.create({
-         _seller: _id,
+      const discount = await AdminDiscount.create({
+         _admin: _id,
          _store: _storeId,
          _product: _productId,
          discountType: discountType,

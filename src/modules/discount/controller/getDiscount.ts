@@ -1,4 +1,4 @@
-import { Discount } from "../../../models/discount";
+import { AdminDiscount } from "../../../models/discount";
 import { Request, Response } from "express";
 
 
@@ -9,7 +9,7 @@ export const getDiscount = async (req: Request, res: Response) => {
          return res.status(401).json({ message: 'Unauthorized access' })
       }
       const { _discountId } = req.query
-      const discount = await Discount.findOne({ _id: _discountId }).populate('_product')
+      const discount = await AdminDiscount.findOne({ _id: _discountId }).populate('_product')
       if (!discount) {
          return res.status(400).json({ success: false, error: 'Invalid discount id' })
       }
