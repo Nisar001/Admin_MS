@@ -5,5 +5,16 @@ import { getProduct } from "./getProduct";
 import { toggleProduct } from "./toggleProduct";
 import { updateProduct } from "./updateProduct";
 import { getAllBlockedProduct } from "./getAllBlockedProduct";
+import { availabilityStatus } from "./availability";
 
-export { addProduct, deleteProduct, getAllProduct, getAllProductByCategory, getProduct, toggleProduct, updateProduct, getAllBlockedProduct }
+export {
+   addProduct,
+   deleteProduct,
+   getAllProduct,
+   getAllProductByCategory,
+   getProduct,
+   toggleProduct,
+   updateProduct,
+   getAllBlockedProduct,
+   availabilityStatus
+}

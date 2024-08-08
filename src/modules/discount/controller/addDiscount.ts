@@ -66,6 +66,14 @@ export const addDiscountOnProduct = async (req: Request, res: Response) => {
          startDate: startDate,
          endDate: endDate
       })
+      await Product.findByIdAndUpdate({ _id: _productId }, { discount: discount._id }, function (err, docs) {
+         if (err) {
+            return res.json({ err })
+         }
+         else {
+            return res.json({ updatedData: docs });
+         }
+      })
       return res.status(200).json({ success: true, message: "Discount added on product", discount })
    } catch (error) {
       return res.status(500).json({ success: false, message: "Server Error", error })

@@ -1,23 +1,33 @@
 import mongoose, { Document, model, Schema } from 'mongoose'
 
 export interface IProduct extends Document {
-   _seller: mongoose.Schema.Types.ObjectId;
+   _createdBy: {
+      _id: mongoose.Schema.Types.ObjectId,
+      role: 'seller' | 'admin'
+   };
    _category: mongoose.Schema.Types.ObjectId;
    _store?: mongoose.Schema.Types.ObjectId;
    name: string;
    price: number;
    mrp: number;
    image?: string;
+   stock: number;
+   discount?: mongoose.Schema.Types.ObjectId;
    description?: string;
    isDeleted: boolean;
    isBlocked: boolean;
+   isAvailable: boolean;
 }
 
 const ProductSchema: Schema = new Schema({
-   _seller: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'seller',
-      required: true
+   _createdBy: {
+      _id: {
+         type: Schema.Types.ObjectId,
+      },
+      role: {
+         type: String,
+         enum: ['seller', 'admin']
+      }
    },
    _category: {
       type: mongoose.Schema.Types.ObjectId,
@@ -42,6 +52,14 @@ const ProductSchema: Schema = new Schema({
    image: {
       type: String,
    },
+   stock: {
+      type: Number,
+      required: true
+   },
+   discount: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'discounts'
+   },
    description: {
       type: String,
    },
@@ -52,6 +70,10 @@ const ProductSchema: Schema = new Schema({
    isDeleted: {
       type: Boolean,
       default: false
+   },
+   isAvailable: {
+      type: Boolean,
+      default: true
    }
 },
    {

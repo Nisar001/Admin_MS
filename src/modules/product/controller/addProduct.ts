@@ -3,12 +3,12 @@ import { Product } from "../../../models/product";
 
 export const addProduct = async (req: Request, res: Response) => {
    try {
-      const { _id } = req.user;
+      const { _id, role } = req.user;
       if (!_id) {
          return res.status(401).json({ message: 'Unauthorized User' })
       }
       const { _category, _store } = req.query
-      const { name, price, mrp, description } = req.body
+      const { name, price, mrp, description, stock, isAvailable } = req.body
       const isNonEmpty = (field: any) => {
          if (typeof field === 'string') {
             return field.trim() !== '';
@@ -23,7 +23,9 @@ export const addProduct = async (req: Request, res: Response) => {
          !isNonEmpty(name) ||
          !isNonEmpty(price) ||
          !isNonEmpty(mrp) ||
-         !isNonEmpty(description)
+         !isNonEmpty(description) ||
+         !isNonEmpty(stock) ||
+         !isNonEmpty(isAvailable)
       ) {
          return res.status(400).json({ error: 'Field cannot be empty' });
       }
@@ -36,29 +38,28 @@ export const addProduct = async (req: Request, res: Response) => {
       if (!mrp) {
          return res.json({ message: 'Product MRP is Required' })
       }
-      const existingProduct = await Product.findOne({ _category: _category, _store: _store, name: name })
+      const existingProduct = await Product.findOne({ _store: _store, name: name })
       if (existingProduct) {
-         return res.status(409).json({ message: 'Item found...' })
+         return res.status(409).json({ message: 'Item found in the store of seller' })
       }
       const product = await Product.create({
-         _seller: _id,
+         _createdBy: {
+            _id: _id,
+            role: role
+         },
          _category: _category,
          _store: _store,
          name: name,
          price: price,
          mrp: mrp,
-         description: description
+         description: description,
+         stock: stock,
+         isAvailable: isAvailable
       })
       return res.status(201).json({
          success: true,
          message: "Product Added Successfully",
-         product: {
-            ProductId: product._id,
-            productName: product.name,
-            productPrice: product.price,
-            productMRP: product.mrp,
-            ProductDescription: product.description
-         }
+         product
       })
    } catch (error) {
       return res.status(500).json({ success: false, error: error.message })

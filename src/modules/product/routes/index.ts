@@ -7,7 +7,8 @@ import {
    updateProduct,
    deleteProduct,
    toggleProduct,
-   getAllBlockedProduct
+   getAllBlockedProduct,
+   availabilityStatus
 } from '../controller'
 
 
@@ -19,6 +20,7 @@ router.get('/get-all-product', getAllProduct)
 router.get('/get-all-product-category', getAllProductByCategory)
 router.get('/get-all-blocked-products', getAllBlockedProduct)
 router.patch('/update-product', updateProduct)
+router.patch('/available-status', availabilityStatus)
 router.patch('/toggle-product', toggleProduct)
 router.delete('/delete-product', deleteProduct)
 
