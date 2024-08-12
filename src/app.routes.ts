@@ -4,6 +4,9 @@ import categoryRoutes from './modules/category/routes'
 import discountRoutes from './modules/discount/routes'
 import productRoutes from './modules/product/routes'
 import bundleRoutes from './modules/bundles/routes'
+import userRoutes from './modules/users/routes'
+import sellerRoutes from './modules/seller/routes'
+import storeRoutes from './modules/store/routes'
 import { verify_token } from './middlewares/verifyJWT'
 
 const router = express.Router()
@@ -20,6 +23,11 @@ router.use('/admin/discount', discountRoutes)
 router.use('/admin/product', productRoutes)
 //bundles
 router.use('/admin/bundle', bundleRoutes)
-
+//User
+router.use('/admin/users', userRoutes)
+//seller
+router.use('/admin/sellers', sellerRoutes)
+//store
+router.use('/admin/store', storeRoutes)
 
 export default router

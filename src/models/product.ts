@@ -13,8 +13,10 @@ export interface IProduct extends Document {
    image?: string;
    stock: number;
    discount?: mongoose.Schema.Types.ObjectId;
+   discountedPrice: number;
    description?: string;
    isDeleted: boolean;
+   isHotDeal: boolean;
    isBlocked: boolean;
    isAvailable: boolean;
 }
@@ -41,6 +43,10 @@ const ProductSchema: Schema = new Schema({
       type: String,
       required: true
    },
+   discountedPrice: {
+      type: Number,
+      default: null
+   },
    price: {
       type: Number,
       required: true,
@@ -64,6 +70,10 @@ const ProductSchema: Schema = new Schema({
       type: String,
    },
    isBlocked: {
+      type: Boolean,
+      default: false
+   },
+   isHotDeal: {
       type: Boolean,
       default: false
    },
