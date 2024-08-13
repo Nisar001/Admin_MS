@@ -18,6 +18,7 @@ export const deleteDiscountOnProduct = async (req: Request, res: Response) => {
          return res.json({ message: 'discount on product not found' })
       }
       product.discount = undefined
+      product.discountedPrice = null
       await product.save()
       await AdminDiscount.findByIdAndDelete({ _id: _discountId });
       return res.status(200).json({ success: true, message: "Discount deleted successfully" })

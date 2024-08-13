@@ -10,7 +10,7 @@ export interface IAdminDiscounts extends Document {
    endDate: Date;
 }
 
-const AdminDiscountSchema: Schema = new Schema({
+const AdminDiscountSchema: Schema = new Schema<IAdminDiscounts>({
    _admin: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'user',

@@ -21,7 +21,7 @@ export interface IAdmin extends Document {
    tempCountryCode?: string
 }
 
-const AdminSchema: Schema = new Schema(
+const AdminSchema: Schema = new Schema<IAdmin>(
    {
       name: {
          type: String,

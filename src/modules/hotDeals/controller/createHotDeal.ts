@@ -1,21 +1,22 @@
 import { Request, Response } from 'express';
 import moment from 'moment';
-import { AdminDiscount } from '../../../models/discount';
+import { HotDeal } from '../../../models/hotDeals';
 import { Product } from '../../../models/product';
+import mongoose from 'mongoose';
 
-export const addDiscountOnProduct = async (req: Request, res: Response) => {
+export const createHotDeal = async (req: Request, res: Response) => {
    try {
-      const { _id } = req.user; // admin or seller id
+      const { _id, role } = req.user; // admin or seller id
       if (!_id) {
          return res.status(401).json({ message: 'Unauthorized Access' });
       }
 
-      const { _productId, _storeId } = req.query;
-      if (!_productId && _storeId) {
-         return res.status(404).json({ message: 'Product id and Store id is missing' });
+      const { _productId } = req.query;
+      if (!_productId) {
+         return res.status(404).json({ message: 'Productid is missing' });
       }
 
-      const { discountType, discountValue, startDate, endDate } = req.body;
+      const { title, description, discount, startDate, endDate } = req.body;
 
       const isNonEmpty = (field: any) => {
          if (typeof field === 'string') {
@@ -28,8 +29,9 @@ export const addDiscountOnProduct = async (req: Request, res: Response) => {
       };
 
       if (
-         !isNonEmpty(discountType) ||
-         !isNonEmpty(discountValue) ||
+         !isNonEmpty(title) ||
+         !isNonEmpty(description) ||
+         !isNonEmpty(discount) ||
          !isNonEmpty(startDate) ||
          !isNonEmpty(endDate)
       ) {
@@ -56,50 +58,43 @@ export const addDiscountOnProduct = async (req: Request, res: Response) => {
       }
 
       // Check for existing discount on the product by this admin
-      const existingDiscount = await AdminDiscount.findOne({ _admin: _id, _product: _productId });
-      if (existingDiscount) {
-         return res.status(409).json({ message: 'Discount on Product is already added' });
+      const existingHotDeal = await HotDeal.findOne({ '_createdBy._id': _id, title: title, product: _productId });
+      if (existingHotDeal) {
+         return res.status(409).json({ message: 'Hot Deal on Product is already added' });
       }
 
-      const product = await Product.findById({ _id: _productId });
+      const product = await Product.findOne({ _id: _productId })
       if (!product) {
-         return res.status(404).json({ message: 'Product not found' });
+         return res.json({ message: 'Product Not Found' })
       }
-
       // Calculate the discounted price based on discount type
       let discountedPrice: number;
-      if (discountType === 'percent') {
-         if (discountValue > 100 || discountValue < 0) {
+      if (discount) {
+         if (discount > 100 || discount < 0) {
             return res.status(400).json({ message: 'Invalid percentage value. Must be between 0 and 100.' });
          }
-         discountedPrice = product.mrp - (product.mrp * (discountValue / 100));
-      } else if (discountType === 'price') {
-         if (discountValue > product.mrp || discountValue < 0) {
-            return res.status(400).json({ message: 'Discount value cannot be greater than the MRP or negative.' });
-         }
-         discountedPrice = product.mrp - discountValue;
-      } else {
-         return res.status(400).json({ message: 'Invalid discount type.' });
+         discountedPrice = product.mrp - (product.mrp * (discount / 100));
       }
 
       // Create a new discount
-      const discount = await AdminDiscount.create({
-         _admin: _id,
-         _store: _storeId,
-         _product: _productId,
-         discountType: discountType,
-         discountValue: discountValue,
+      const hotDeal = await HotDeal.create({
+         _createdBy: {
+            _id: _id,
+            role: role
+         },
+         title: title,
+         description: description,
+         discount: discount,
          startDate: startDate,
-         endDate: endDate
+         endDate: endDate,
+         product: _productId
       });
 
       // Update product with the discount and discounted price
-      product.discountedPrice = discountedPrice;
-      product.discount = discount._id as any;
-
+      product.HotDealPrice = discountedPrice;
       await product.save();
 
-      return res.status(200).json({ success: true, message: 'Discount added on product', discount, discountedPrice });
+      return res.status(200).json({ success: true, message: 'Product added in Hot Deal', hotDeal, discountedPrice });
    } catch (error) {
       return res.status(500).json({ success: false, message: 'Server Error', error });
    }

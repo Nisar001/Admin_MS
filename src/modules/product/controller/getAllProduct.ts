@@ -15,7 +15,7 @@ export const getAllProduct = async (req: Request, res: Response) => {
 
       const query = name
          ? { name: { $regex: name, $options: 'i' } }
-         : { _seller: _id };
+         : {};
 
       const products = await Product.find(query).populate('_store').populate('_category')
          .skip((page - 1) * limit)

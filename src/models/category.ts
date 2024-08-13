@@ -8,7 +8,7 @@ export interface ICategory extends Document {
    updatedAt: Date;
 }
 
-const CategorySchema: Schema = new Schema({
+const CategorySchema: Schema = new Schema<ICategory>({
    _admin: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'admin',

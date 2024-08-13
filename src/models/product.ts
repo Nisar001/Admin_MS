@@ -16,12 +16,12 @@ export interface IProduct extends Document {
    discountedPrice: number;
    description?: string;
    isDeleted: boolean;
-   isHotDeal: boolean;
+   HotDealPrice?: number;
    isBlocked: boolean;
    isAvailable: boolean;
 }
 
-const ProductSchema: Schema = new Schema({
+const ProductSchema: Schema = new Schema<IProduct>({
    _createdBy: {
       _id: {
          type: Schema.Types.ObjectId,
@@ -73,9 +73,9 @@ const ProductSchema: Schema = new Schema({
       type: Boolean,
       default: false
    },
-   isHotDeal: {
-      type: Boolean,
-      default: false
+   HotDealPrice: {
+      type: Number,
+      default: null
    },
    isDeleted: {
       type: Boolean,

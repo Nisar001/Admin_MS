@@ -23,7 +23,7 @@ export interface IAuth extends Document {
    tempCountryCode?: string
 }
 
-const AuthSchema: Schema = new Schema(
+const AuthSchema: Schema = new Schema<IAuth>(
    {
       username: {
          type: String,

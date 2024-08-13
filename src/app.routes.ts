@@ -7,6 +7,7 @@ import bundleRoutes from './modules/bundles/routes'
 import userRoutes from './modules/users/routes'
 import sellerRoutes from './modules/seller/routes'
 import storeRoutes from './modules/store/routes'
+import hotdealRoutes from './modules/hotDeals/routes'
 import { verify_token } from './middlewares/verifyJWT'
 
 const router = express.Router()
@@ -29,5 +30,7 @@ router.use('/admin/users', userRoutes)
 router.use('/admin/sellers', sellerRoutes)
 //store
 router.use('/admin/store', storeRoutes)
+//hot deal 
+router.use('/admin/hotdeal', hotdealRoutes)
 
 export default router

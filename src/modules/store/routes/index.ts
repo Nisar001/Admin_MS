@@ -10,9 +10,9 @@ import {
 const router = express.Router()
 
 router.get('/get-all-stores', getAllStores)
-router.get('/get-all-blocked-stores', getBlockedStores)
+router.get('/get-blocked-stores', getBlockedStores)
 router.get('/get-store', getStoreById)
-router.get('/get-all-unblocked-stores', getUnblockedStores)
+router.get('/get-unblocked-stores', getUnblockedStores)
 router.patch('/toggle-store', toggleStore)
 
 export default router
