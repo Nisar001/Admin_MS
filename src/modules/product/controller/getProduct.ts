@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { Product } from "../../../models/product";
-import { Discount } from "../../../models/discount";
+import { AdminDiscount } from "../../../models/discount";
 
 export const getProduct = async (req: Request, res: Response) => {
    try {
@@ -10,7 +10,7 @@ export const getProduct = async (req: Request, res: Response) => {
       }
       const { _productId } = req.query
       const product = await (await (await Product.findById({ _id: _productId })).populate('_store')).populate('_category')
-      const discount = await Discount.findOne({ _product: _productId })
+      const discount = await AdminDiscount.findOne({ _product: _productId })
       if (!product) {
          return res.status(404).json({
             succsess: false, message: 'Product Not Found'

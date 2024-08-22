@@ -1,19 +1,17 @@
 import mongoose, { model, Schema } from 'mongoose'
 
-export interface IDiscounts extends Document {
-   _seller: mongoose.Schema.Types.ObjectId;
-
+export interface IAdminDiscounts extends Document {
+   _admin: mongoose.Schema.Types.ObjectId;
    _store?: mongoose.Schema.Types.ObjectId
-
-   _product: mongoose.Schema.Types.ObjectId;
-   discountType: string;
+   _product: mongoose.Schema.Types.ObjectId[];
+   discountType: 'precent' | 'price';
    discountValue: number;
    startDate: Date;
    endDate: Date;
 }
 
-const DiscountSchema: Schema = new Schema({
-   _seller: {
+const AdminDiscountSchema: Schema = new Schema<IAdminDiscounts>({
+   _admin: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'user',
       required: true
@@ -22,13 +20,15 @@ const DiscountSchema: Schema = new Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'store',
    },
-   _product: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'product',
-      required: true
-   },
+   _product: [
+      {
+         type: mongoose.Schema.Types.ObjectId,
+         ref: 'product',
+         required: true
+      }],
    discountType: {
       type: String,
+      enum: ['percent', 'price']
    },
    discountValue: {
       type: Number
@@ -44,4 +44,4 @@ const DiscountSchema: Schema = new Schema({
    versionKey: false
 })
 
-export const Discount = model<IDiscounts>('discount', DiscountSchema)
+export const AdminDiscount = model<IAdminDiscounts>('admin_discount', AdminDiscountSchema)

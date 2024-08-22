@@ -1,4 +1,4 @@
-import { Discount } from '../../../models/discount'
+import { AdminDiscount } from '../../../models/discount'
 import { Request, Response } from 'express'
 
 export const getAllDiscount = async (req: Request, res: Response) => {
@@ -12,8 +12,8 @@ export const getAllDiscount = async (req: Request, res: Response) => {
       const limitNumber = parseInt(limit as string)
       const searchFilter = search
          ? { discountType: { $regex: search, $options: 'i' } }
-         : { _id }
-      const discount = await Discount.find(searchFilter).populate('_product')
+         : { _admin: _id }
+      const discount = await AdminDiscount.find(searchFilter).populate('_product')
          .sort({ discountType: 1 })
          .skip((pageNumber - 1) * limitNumber)
          .limit(limitNumber)
@@ -22,7 +22,7 @@ export const getAllDiscount = async (req: Request, res: Response) => {
          return res.status(404).json({ message: 'Discount Not Found' })
       }
 
-      const totalCounts = await Discount.countDocuments(searchFilter)
+      const totalCounts = await AdminDiscount.countDocuments(searchFilter)
       return res.status(200).json({
          success: true,
          page: pageNumber,

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { Product } from "../../../models/product";
-import { Discount } from "../../../models/discount";
+import { AdminDiscount } from "../../../models/discount";
 
 export const getAllProduct = async (req: Request, res: Response) => {
    try {
@@ -15,12 +15,12 @@ export const getAllProduct = async (req: Request, res: Response) => {
 
       const query = name
          ? { name: { $regex: name, $options: 'i' } }
-         : { _seller: _id };
+         : {};
 
       const products = await Product.find(query).populate('_store').populate('_category')
          .skip((page - 1) * limit)
          .limit(limit);
-      const discount = await Discount.find({ _seller: _id })
+      const discount = await AdminDiscount.find({ _seller: _id })
 
       if (products.length === 0) {
          return res.json({ message: 'No Products, Please add some products' });

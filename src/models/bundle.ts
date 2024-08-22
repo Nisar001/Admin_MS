@@ -14,7 +14,7 @@ interface IBundle extends Document {
    }
 }
 
-const bundleSchema: Schema = new Schema(
+const bundleSchema: Schema = new Schema<IBundle>(
    {
       name: {
          type: String,
@@ -60,4 +60,4 @@ const bundleSchema: Schema = new Schema(
    { timestamps: true, versionKey: false }
 )
 
-export const Bundle = model<IBundle>('bundle', bundleSchema)
+export const Bundle = model<IBundle>('Bundle', bundleSchema)

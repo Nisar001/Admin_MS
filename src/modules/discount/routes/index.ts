@@ -7,6 +7,6 @@ router.post('/add-discount', addDiscountOnProduct)
 router.get('/get-discount', getDiscount)
 router.get('/get-all-discount', getAllDiscount)
 router.patch('/update-discount', updateDiscountOnProduct)
-router.delete('delete-discount', deleteDiscountOnProduct)
+router.delete('/delete-discount', deleteDiscountOnProduct)
 
 export default router

@@ -1,19 +1,27 @@
 import express from 'express'
 import {
-   createBundleProductSale,
-   getBundleProductSale,
-   getAllBundleProductSale,
-   updateBundleProductSale,
-   deleteBundleProductSale
+   addBundle,
+   deleteBundle,
+   getAllBlockedBundle,
+   getBlockedBundle,
+   getBundle,
+   getAllBundle,
+   toggleBundle,
+   removeBundleProduct,
+   updateBundle
 } from '../controllers'
 
 
 const router = express.Router()
 
-router.post('/add-bundle', createBundleProductSale)
-router.get('/get-bundle/:bundleId', getBundleProductSale)
-router.get('/get-all-bundle/:sellerId', getAllBundleProductSale)
-router.patch('/bundle/:bundleId', updateBundleProductSale)
-router.delete('/bundle/:bundleId', deleteBundleProductSale)
+router.post('/add-bundle', addBundle)
+router.get('/get-bundle', getBundle)
+router.get('/get-all-bundles', getAllBundle)
+router.patch('/update-bundle', updateBundle)
+router.delete('/delete-bundle', deleteBundle)
+router.patch('/toggle-bundle', toggleBundle)
+router.get('/get-blocked-bundle', getBlockedBundle)
+router.get('/get-all-blocked-bundle', getAllBlockedBundle)
+router.patch('/remove-bundle-product', removeBundleProduct)
 
 export default router
